@@ -16,26 +16,26 @@ function ensure_ip() {
 COMMAND=$1
 IP=$2
 
-# ./ctl run
+# ./container run
 if [ "$COMMAND" == "run" ]; then
     ensure_ip
     docker rm $NAME
     docker run -p 2181:2181 -p 9092:9092 --name $NAME --env ADVERTISED_HOST=$IP --env ADVERTISED_PORT=9092 spotify/kafka
 
-# ./ctl attach
+# ./container attach
 elif [ "$COMMAND" == "attach" ]; then
     docker exec -it $NAME bash
 
-# ./ctl tail
+# ./container tail
 elif [ "$COMMAND" == "tail" ]; then
     docker logs -f $NAME
 
-# ./ctl producer
+# ./container producer
 elif [ "$COMMAND" == "producer" ]; then
     ensure_ip
     KAFKA_SERVER=$IP make producer
 
-# ./ctl consumer
+# ./container consumer
 elif [ "$COMMAND" == "consumer" ]; then
     ensure_ip
     KAFKA_SERVER=$IP make consumer
